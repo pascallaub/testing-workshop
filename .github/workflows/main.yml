@@ -1,4 +1,4 @@
-name: CI
+name: CI Tests und Coverage
 
 on:
   push:
@@ -17,16 +17,22 @@ jobs:
         node-version: [16.x, 18.x]
 
     steps:
-      - name: Checkout repository
+      - name: Repository auschecken
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Node.js einrichten
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
+      - name: Abhängigkeiten installieren
         run: npm ci
 
-      - name: Run tests with coverage
+      - name: Tests mit Coverage ausführen
         run: npm run test:coverage
+
+      - name: Coverage-Report als Artifact hochladen
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
